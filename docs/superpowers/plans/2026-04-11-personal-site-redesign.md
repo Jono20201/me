@@ -1,0 +1,1086 @@
+# Personal Site Redesign Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **ALSO REQUIRED:** Use the `frontend-design:frontend-design` skill when writing the final HTML/CSS in Task 5.
+
+**Goal:** Redesign `index.html` into a product-grade editorial personal site using Fraunces/Geist typography, burnt orange accent, two-zone desktop layout, and full `prefers-color-scheme` support.
+
+**Architecture:** Single HTML file, all CSS inline in `<style>`, no JavaScript, no build step. Desktop layout uses CSS grid with a fixed 40% sidebar and scrollable 60% main panel. Mobile collapses to a compact sticky header + single-column content.
+
+**Tech Stack:** HTML5, CSS3 (custom properties, grid, animations), Google Fonts (Fraunces, Geist, Geist Mono), Font Awesome 7
+
+---
+
+## File Map
+
+| File | Action | Responsibility |
+|------|--------|----------------|
+| `index.html` | Modify | Complete redesign — all HTML structure and inline CSS |
+
+---
+
+### Task 1: Back up the current site
+
+**Files:**
+- Create: `index.html.bak`
+
+- [ ] **Step 1: Copy current index.html to a backup**
+
+```bash
+cp /workspace/index.html /workspace/index.html.bak
+```
+
+- [ ] **Step 2: Verify backup exists**
+
+```bash
+ls -la /workspace/index.html.bak
+```
+
+Expected: file exists, same size as `index.html`
+
+- [ ] **Step 3: Commit backup**
+
+```bash
+cd /workspace
+git add index.html.bak
+git commit -m "chore: back up original index.html before redesign"
+```
+
+---
+
+### Task 2: Set up CSS foundation — variables, fonts, reset
+
+**Files:**
+- Modify: `index.html` — replace entire `<style>` block
+
+This task establishes the design tokens, font imports, and base reset. No visible layout changes yet — just the foundation.
+
+- [ ] **Step 1: Replace the `<head>` section with updated font imports and meta**
+
+Replace the existing `<head>` contents with:
+
+```html
+<head>
+    <title>Jonathan Martin</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="manifest" href="assets/site.webmanifest">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ─── Design tokens ─── */
+        :root {
+            --bg:             #FAFAF7;
+            --text-primary:   #1A1A1A;
+            --text-secondary: #4A4A47;
+            --text-muted:     #7A7A75;
+            --accent:         #D4490A;
+            --border:         rgba(26, 26, 26, 0.12);
+            --surface:        #F2F1EC;
+            --sidebar-width:  40%;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg:             #0E0E0C;
+                --text-primary:   #F0EFE9;
+                --text-secondary: #A8A89E;
+                --text-muted:     #6A6A64;
+                --accent:         #E85A1A;
+                --border:         rgba(240, 239, 233, 0.12);
+                --surface:        #181816;
+            }
+        }
+
+        /* ─── Base reset ─── */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+    </style>
+</head>
+```
+
+- [ ] **Step 2: Open `index.html` in a browser**
+
+Open `file:///workspace/index.html` in your browser.
+
+Expected: Page loads without errors. Fonts are loading (check Network tab). Background colour has changed to warm off-white (light mode) or near-black (dark mode). The page content is still there but unstyled from the layout perspective.
+
+- [ ] **Step 3: Commit**
+
+```bash
+cd /workspace
+git add index.html
+git commit -m "feat: add CSS design tokens and Fraunces/Geist font imports"
+```
+
+---
+
+### Task 3: Implement the two-zone HTML structure
+
+**Files:**
+- Modify: `index.html` — replace `<body>` HTML structure
+
+Replace the existing `<body>` content and add the two-zone grid layout CSS to the `<style>` block.
+
+- [ ] **Step 1: Add layout CSS to the `<style>` block (after the base reset)**
+
+Append this to the `<style>` block:
+
+```css
+/* ─── Layout ─── */
+.site-wrapper {
+    display: block;
+    min-height: 100vh;
+    position: relative;
+}
+
+.sidebar {
+    padding: 40px 28px;
+    background-color: var(--bg);
+}
+
+.main-content {
+    padding: 48px 28px;
+}
+
+@media (min-width: 768px) {
+    .site-wrapper {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) 1fr;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 56px 48px;
+        border-right: 1px solid var(--border);
+    }
+
+    .main-content {
+        padding: 56px 64px;
+        overflow-y: auto;
+        height: 100vh;
+    }
+}
+
+@media (min-width: 1200px) {
+    .sidebar {
+        padding: 72px 64px;
+    }
+
+    .main-content {
+        padding: 72px 80px;
+    }
+}
+```
+
+- [ ] **Step 2: Replace the `<body>` HTML with the new structure skeleton**
+
+```html
+<body>
+    <div class="site-wrapper">
+        <aside class="sidebar">
+            <!-- sidebar content goes here in Task 4 -->
+        </aside>
+        <main class="main-content">
+            <!-- main content goes here in Task 5 -->
+        </main>
+    </div>
+</body>
+```
+
+- [ ] **Step 3: Open `index.html` in browser and verify**
+
+Expected: On desktop (≥768px), two columns visible — left sidebar 40%, right main 60%. Sidebar has a faint right border. Both panels scroll independently (may need content to verify). On mobile, single column.
+
+- [ ] **Step 4: Commit**
+
+```bash
+cd /workspace
+git add index.html
+git commit -m "feat: implement two-zone CSS grid layout"
+```
+
+---
+
+### Task 4: Build the sidebar content
+
+**Files:**
+- Modify: `index.html` — sidebar HTML + sidebar CSS
+
+- [ ] **Step 1: Add sidebar CSS to the `<style>` block**
+
+```css
+/* ─── Sidebar ─── */
+.sidebar-photo {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: top center;
+    border: 1px solid var(--border);
+    margin-bottom: 28px;
+    filter: grayscale(20%);
+    transition: filter 0.4s ease;
+}
+
+.sidebar-photo:hover {
+    filter: grayscale(0%);
+}
+
+.sidebar-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.sidebar-handle {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: block;
+}
+
+.sidebar-tagline {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 36px;
+}
+
+/* Social links */
+.social-links {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+    .social-links {
+        flex-direction: column;
+        gap: 4px;
+    }
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    padding: 6px 0;
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.social-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
+.social-links a:hover {
+    color: var(--accent);
+}
+
+.social-links a:hover::after {
+    transform: scaleX(1);
+}
+
+.social-links i {
+    width: 16px;
+    font-size: 0.9rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Contact info */
+.sidebar-contact {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+}
+
+.sidebar-contact a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-family: 'Geist Mono', monospace;
+    transition: color 0.2s ease;
+}
+
+.sidebar-contact a:hover {
+    color: var(--accent);
+}
+
+.sidebar-contact i {
+    width: 14px;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+}
+```
+
+- [ ] **Step 2: Replace the sidebar placeholder comment with actual content**
+
+```html
+<aside class="sidebar">
+    <img class="sidebar-photo" src="assets/me.jpeg" alt="Jonathan Martin">
+    <h1 class="sidebar-name">Jonathan Martin</h1>
+    <span class="sidebar-handle">// jono20201</span>
+    <p class="sidebar-tagline">Father, entrepreneur and software engineering leader.</p>
+
+    <ul class="social-links">
+        <li><a href="https://github.com/Jono20201" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+        <li><a href="https://stackoverflow.com/users/1392533/jono20201" target="_blank"><i class="fab fa-stack-overflow"></i> StackOverflow</a></li>
+        <li><a href="https://x.com/jono20201" target="_blank"><i class="fab fa-x-twitter"></i> X</a></li>
+        <li><a href="https://www.linkedin.com/in/jonathanpaulmartin/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+    </ul>
+
+    <div class="sidebar-contact">
+        <a href="mailto:jono20201@gmail.com"><i class="fas fa-envelope"></i> jono20201@gmail.com</a>
+        <a href="tel:07446066435"><i class="fas fa-phone"></i> +44 74460 66435</a>
+    </div>
+</aside>
+```
+
+- [ ] **Step 3: Open `index.html` in browser and verify**
+
+Expected:
+- Profile photo renders as a portrait-aspect rectangle (not a circle), slightly desaturated
+- "Jonathan Martin" in large Fraunces serif font
+- Handle in small monospace muted text
+- Social links stack vertically on desktop, horizontally on mobile
+- Hovering a link draws an orange underline from left to right
+- Contact info in small monospace at the bottom
+
+- [ ] **Step 4: Commit**
+
+```bash
+cd /workspace
+git add index.html
+git commit -m "feat: build sidebar with photo, name, social links, contact"
+```
+
+---
+
+### Task 5: Build the main content — invoke frontend-design skill
+
+**Files:**
+- Modify: `index.html` — main content HTML + content CSS
+
+**IMPORTANT:** Before writing the main content code, invoke the `frontend-design:frontend-design` skill. The skill will guide the implementation of the main content sections to ensure they are visually exceptional and not generic. Pass the full spec context to it.
+
+The main content must include these sections in order:
+1. Value proposition opener
+2. About / background
+3. "What I can help you with"
+4. Tech & expertise tags
+5. Notable work
+6. Contact CTA (mobile-visible only)
+
+- [ ] **Step 1: Invoke frontend-design:frontend-design skill with this context**
+
+Invoke the skill and implement the main content sections. The design spec is at `docs/superpowers/specs/2026-04-11-personal-site-redesign-design.md`.
+
+Key design requirements for main content:
+- Value prop: 1 punchy sentence in Fraunces italic, large (1.5–2rem), leading the section
+- "What I can help you with": 4 items. Each has a bold Fraunces lead phrase + 1–2 sentence description in Geist. Left border accent bar appears on hover.
+- Tech tags: Geist Mono pill tags (`.tech-tag` class), wrapping flex row
+- Notable work: 2 items with title, short description, and link
+- Contact CTA: only shown on mobile (hidden at ≥768px via `display: none`)
+- All sections fade-in + slide-up on load with staggered `animation-delay`
+
+Suggested content for "What I can help you with":
+```
+Scaling engineering teams & technical leadership
+  I've led teams from early-stage to growth, hiring, mentoring, and building the processes that let engineers ship with confidence.
+
+Building cloud-native payment & fintech systems
+  Currently building card processing infrastructure at Acquired. I know what it takes to make payment systems secure, reliable, and auditable at scale.
+
+Agentic software engineering & AI-accelerated delivery
+  Fully committed to using AI agents as first-class members of the engineering workflow — producing more, faster, without sacrificing quality.
+
+AWS architecture & infrastructure-as-code
+  Certified AWS Solutions Architect. I design, build, and automate cloud infrastructure with Terraform — repeatable, version-controlled, no snowflakes.
+```
+
+Tech tags to include:
+`C#` `.NET` `TypeScript` `React` `PHP` `Laravel` `Go` `Java` `Swift` `AWS` `Terraform` `Linux` `Docker` `Confluence`
+
+- [ ] **Step 2: Add the main content CSS to the `<style>` block**
+
+```css
+/* ─── Main content ─── */
+.content-section {
+    margin-bottom: 56px;
+}
+
+.content-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Value proposition */
+.value-prop {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Section labels */
+.section-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    display: block;
+}
+
+/* About text */
+.about-text p {
+    font-size: 0.975rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 16px;
+}
+
+.about-text p:last-child {
+    margin-bottom: 0;
+}
+
+.about-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.about-text a {
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--accent);
+    transition: color 0.2s ease;
+}
+
+.about-text a:hover {
+    color: var(--accent);
+}
+
+.about-text em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+/* Help section */
+.help-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.help-item {
+    padding: 24px 20px;
+    border-top: 1px solid var(--border);
+    border-left: 2px solid transparent;
+    transition: border-left-color 0.2s ease, background-color 0.2s ease;
+    cursor: default;
+}
+
+.help-item:last-child {
+    border-bottom: 1px solid var(--border);
+}
+
+.help-item:hover {
+    border-left-color: var(--accent);
+    background-color: var(--surface);
+}
+
+.help-item-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.help-item-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+/* Tech tags */
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+}
+
+.tech-tag {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 3px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tech-tag:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Notable work */
+.notable-items {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.notable-item-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.notable-item-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 10px;
+}
+
+.notable-item-link {
+    font-size: 0.8rem;
+    font-family: 'Geist Mono', monospace;
+    color: var(--accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.notable-item-link:hover {
+    border-bottom-color: var(--accent);
+}
+
+/* Contact CTA — mobile only */
+.contact-cta {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .contact-cta {
+        display: none;
+    }
+}
+
+.contact-cta p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.contact-cta-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-cta-links a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: 'Geist Mono', monospace;
+    transition: color 0.2s ease;
+}
+
+.contact-cta-links a:hover {
+    color: var(--accent);
+}
+```
+
+- [ ] **Step 3: Add the main content HTML inside `<main class="main-content">`**
+
+```html
+<main class="main-content">
+    <p class="value-prop">
+        I help businesses build scalable, secure software — faster than they thought possible.
+    </p>
+
+    <section class="content-section about-text">
+        <span class="section-label">About</span>
+        <p>
+            I'm a Staff Software Engineer at <a href="https://acquired.com/">Acquired</a>, working primarily on our card processing platform. I've spent my career at the intersection of engineering leadership and hands-on product development — from founding a server hosting company to leading engineering teams at growth-stage startups.
+        </p>
+        <p>
+            I've worked across many languages — <strong>C#</strong>, <strong>TypeScript</strong>, <strong>PHP</strong>, <strong>Java</strong>, <strong>Swift</strong>, and <strong>Go</strong> — and spent many years building with <strong>.NET</strong>, <strong>React</strong>, and <strong>Laravel</strong>. I'm a <em>certified AWS Solutions Architect</em> and have a strong foundation in Linux server administration and cloud infrastructure.
+        </p>
+        <p>
+            I'm fully bought into agentic software engineering — using AI agents as first-class members of the engineering workflow to ship more, faster, without compromising quality.
+        </p>
+    </section>
+
+    <section class="content-section">
+        <span class="section-label">What I can help you with</span>
+        <div class="help-items">
+            <div class="help-item">
+                <div class="help-item-title">Scaling engineering teams &amp; technical leadership</div>
+                <div class="help-item-desc">I've led teams from early-stage to growth, hiring, mentoring, and building the processes that let engineers ship with confidence.</div>
+            </div>
+            <div class="help-item">
+                <div class="help-item-title">Building cloud-native payment &amp; fintech systems</div>
+                <div class="help-item-desc">Currently building card processing infrastructure at Acquired. I know what it takes to make payment systems secure, reliable, and auditable at scale.</div>
+            </div>
+            <div class="help-item">
+                <div class="help-item-title">Agentic software engineering &amp; AI-accelerated delivery</div>
+                <div class="help-item-desc">Fully committed to using AI agents as first-class members of the engineering workflow — producing more, faster, without sacrificing quality.</div>
+            </div>
+            <div class="help-item">
+                <div class="help-item-title">AWS architecture &amp; infrastructure-as-code</div>
+                <div class="help-item-desc">Certified AWS Solutions Architect. I design, build, and automate cloud infrastructure with Terraform — repeatable, version-controlled, no snowflakes.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <span class="section-label">Tech &amp; expertise</span>
+        <ul class="tech-tags">
+            <li class="tech-tag">C#</li>
+            <li class="tech-tag">.NET</li>
+            <li class="tech-tag">TypeScript</li>
+            <li class="tech-tag">React</li>
+            <li class="tech-tag">PHP</li>
+            <li class="tech-tag">Laravel</li>
+            <li class="tech-tag">Go</li>
+            <li class="tech-tag">Java</li>
+            <li class="tech-tag">Swift</li>
+            <li class="tech-tag">AWS</li>
+            <li class="tech-tag">Terraform</li>
+            <li class="tech-tag">Linux</li>
+            <li class="tech-tag">Docker</li>
+            <li class="tech-tag">Confluence</li>
+        </ul>
+    </section>
+
+    <section class="content-section">
+        <span class="section-label">Notable work</span>
+        <div class="notable-items">
+            <div class="notable-item">
+                <div class="notable-item-title">WebSequenceDiagrams Connector for Confluence</div>
+                <div class="notable-item-desc">An Atlassian Marketplace app published through Quintessential Code Ltd that lets teams embed sequence diagrams directly into Confluence pages, supporting all WebSequenceDiagrams.com styles and syntax.</div>
+                <a class="notable-item-link" href="https://marketplace.atlassian.com/apps/1231676/websequencediagrams-connector" target="_blank">View on Atlassian Marketplace →</a>
+            </div>
+            <div class="notable-item">
+                <div class="notable-item-title">Talk: Repeatable cloud infrastructure with Terraform</div>
+                <div class="notable-item-desc">Presented at Norfolk Developers (NorDev) in November 2019 on building repeatable, version-controlled cloud infrastructure with Terraform.</div>
+                <a class="notable-item-link" href="https://www.meetup.com/Norfolk-Developers-NorDev/events/262153256/" target="_blank">View event →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section contact-cta">
+        <span class="section-label">Get in touch</span>
+        <p>Available for consulting engagements. Don't hesitate to reach out.</p>
+        <div class="contact-cta-links">
+            <a href="mailto:jono20201@gmail.com"><i class="fas fa-envelope"></i> jono20201@gmail.com</a>
+            <a href="tel:07446066435"><i class="fas fa-phone"></i> +44 74460 66435</a>
+        </div>
+    </section>
+</main>
+```
+
+- [ ] **Step 4: Open `index.html` in browser and verify**
+
+Expected:
+- Value prop renders in large Fraunces italic
+- "About" section label is small caps monospace
+- "What I can help with" items have a left border that turns orange on hover and background shifts to surface colour
+- Tech tags are small monospace pill-shaped tokens, turning orange on hover
+- Notable work items have title + description + link
+- Contact CTA only visible on mobile
+
+- [ ] **Step 5: Commit**
+
+```bash
+cd /workspace
+git add index.html
+git commit -m "feat: add main content sections — value prop, about, help, tech, notable work"
+```
+
+---
+
+### Task 6: Add page load animations
+
+**Files:**
+- Modify: `index.html` — append animation CSS to `<style>` block
+
+- [ ] **Step 1: Add animation keyframes and staggered load animations**
+
+Append to the `<style>` block:
+
+```css
+/* ─── Animations ─── */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sidebar {
+    animation: fadeSlideUp 0.6s ease both;
+}
+
+.value-prop {
+    animation: fadeSlideUp 0.6s ease both;
+    animation-delay: 0.1s;
+}
+
+.content-section:nth-child(2) {
+    animation: fadeSlideUp 0.6s ease both;
+    animation-delay: 0.2s;
+}
+
+.content-section:nth-child(3) {
+    animation: fadeSlideUp 0.6s ease both;
+    animation-delay: 0.3s;
+}
+
+.content-section:nth-child(4) {
+    animation: fadeSlideUp 0.6s ease both;
+    animation-delay: 0.4s;
+}
+
+.content-section:nth-child(5) {
+    animation: fadeSlideUp 0.6s ease both;
+    animation-delay: 0.5s;
+}
+
+.content-section:nth-child(6) {
+    animation: fadeSlideUp 0.6s ease both;
+    animation-delay: 0.6s;
+}
+```
+
+- [ ] **Step 2: Open `index.html` in browser and verify**
+
+Hard refresh (`Cmd+Shift+R` / `Ctrl+Shift+R`) to see the animations.
+
+Expected: Sidebar and each content section fades in and slides up in sequence, staggered by ~100ms. The effect is subtle and polished — not flashy.
+
+- [ ] **Step 3: Commit**
+
+```bash
+cd /workspace
+git add index.html
+git commit -m "feat: add staggered page load animations"
+```
+
+---
+
+### Task 7: Add grain texture overlay
+
+**Files:**
+- Modify: `index.html` — add grain CSS to `<style>` block
+
+The grain is applied via an SVG `feTurbulence` filter on a `body::after` pseudo-element. It sits above the background but below all content via `pointer-events: none` and `z-index: -1`.
+
+- [ ] **Step 1: Add grain overlay CSS**
+
+Append to the `<style>` block:
+
+```css
+/* ─── Grain texture ─── */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    background-repeat: repeat;
+}
+```
+
+- [ ] **Step 2: Open `index.html` in browser and verify**
+
+Expected: Very subtle grain texture visible over the background. Should be barely perceptible — it adds depth without being distracting. If too strong, reduce `opacity` from `0.025` to `0.015`.
+
+- [ ] **Step 3: Commit**
+
+```bash
+cd /workspace
+git add index.html
+git commit -m "feat: add subtle grain texture overlay"
+```
+
+---
+
+### Task 8: Mobile responsive — compact sticky header
+
+**Files:**
+- Modify: `index.html` — add mobile header HTML + CSS
+
+On mobile, the sidebar is hidden and replaced with a compact sticky header showing: small photo, name, and social icon row.
+
+- [ ] **Step 1: Add mobile header CSS**
+
+Append to the `<style>` block:
+
+```css
+/* ─── Mobile header ─── */
+.mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 24px;
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.mobile-header-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+}
+
+.mobile-header-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.mobile-header-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.mobile-header-handle {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.mobile-header-icons {
+    display: flex;
+    gap: 14px;
+    list-style: none;
+}
+
+.mobile-header-icons a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.mobile-header-icons a:hover {
+    color: var(--accent);
+}
+
+/* Hide mobile header on desktop */
+@media (min-width: 768px) {
+    .mobile-header {
+        display: none;
+    }
+}
+
+/* Hide sidebar on mobile */
+@media (max-width: 767px) {
+    .sidebar {
+        display: none;
+    }
+}
+```
+
+- [ ] **Step 2: Add mobile header HTML immediately after `<body>` opening tag, before `.site-wrapper`**
+
+```html
+<body>
+    <header class="mobile-header">
+        <img class="mobile-header-photo" src="assets/me.jpeg" alt="Jonathan Martin">
+        <div class="mobile-header-info">
+            <div class="mobile-header-name">Jonathan Martin</div>
+            <div class="mobile-header-handle">// jono20201</div>
+        </div>
+        <ul class="mobile-header-icons">
+            <li><a href="https://github.com/Jono20201" target="_blank"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://x.com/jono20201" target="_blank"><i class="fab fa-x-twitter"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/jonathanpaulmartin/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="mailto:jono20201@gmail.com"><i class="fas fa-envelope"></i></a></li>
+        </ul>
+    </header>
+    <div class="site-wrapper">
+        ...
+```
+
+- [ ] **Step 3: Verify on mobile viewport**
+
+Open browser DevTools, set device to iPhone 12 (390px wide) or use responsive mode at <768px.
+
+Expected:
+- Sidebar is hidden
+- Compact sticky header visible at top: small circular photo, name, handle, icon row
+- All content sections stack in single column with comfortable padding
+- Contact CTA section is visible at the bottom of the page
+
+- [ ] **Step 4: Commit**
+
+```bash
+cd /workspace
+git add index.html
+git commit -m "feat: add mobile sticky header, hide sidebar on mobile"
+```
+
+---
+
+### Task 9: Final cross-browser and theme verification
+
+**Files:**
+- None — verification only
+
+- [ ] **Step 1: Verify light mode**
+
+Open `index.html` in browser with `prefers-color-scheme: light` (or use DevTools → Rendering → Emulate CSS media feature).
+
+Expected: Warm off-white `#FAFAF7` background, dark text, burnt orange accent.
+
+- [ ] **Step 2: Verify dark mode**
+
+Switch to `prefers-color-scheme: dark` in DevTools.
+
+Expected: Near-black `#0E0E0C` background, off-white text, slightly brighter orange accent `#E85A1A`.
+
+- [ ] **Step 3: Verify all links work**
+
+Click each social link, email, phone, notable work links. All should open correctly.
+
+- [ ] **Step 4: Verify fonts loaded correctly**
+
+Open DevTools → Network tab → filter by "font". Confirm Fraunces, Geist, and Geist Mono loaded from Google Fonts.
+
+- [ ] **Step 5: Commit final state**
+
+```bash
+cd /workspace
+git add index.html
+git commit -m "feat: complete personal site redesign — editorial product-grade design"
+```
+
+---
+
+## Self-Review
+
+**Spec coverage check:**
+
+| Spec requirement | Covered in task |
+|-----------------|----------------|
+| Fraunces / Geist / Geist Mono fonts | Task 2 |
+| CSS custom property colour system | Task 2 |
+| `prefers-color-scheme` dark/light | Task 2 |
+| Two-zone desktop layout 40/60 | Task 3 |
+| Sidebar: photo, name, handle, tagline, links, contact | Task 4 |
+| Rectangular photo crop | Task 4 |
+| Photo desaturate hover | Task 4 |
+| Link underline draw-in hover | Task 4 |
+| Value proposition opener | Task 5 |
+| About section | Task 5 |
+| "What I can help you with" section | Task 5 |
+| Help item left-border hover | Task 5 CSS |
+| Tech tag pills in Geist Mono | Task 5 |
+| Notable work section | Task 5 |
+| Contact CTA mobile-only | Task 5 |
+| Staggered page load animations | Task 6 |
+| Grain texture | Task 7 |
+| Vertical sidebar border | Task 3 CSS |
+| Mobile compact sticky header | Task 8 |
+| Sidebar hidden on mobile | Task 8 |
+| Responsive at 768px and 1200px breakpoints | Task 3 + Task 8 |
+| Font Awesome 7 kept | Task 2 |
+| Single HTML file, no JS | All tasks |
+
+All spec requirements covered. No placeholders or TBDs.
