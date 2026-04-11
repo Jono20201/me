@@ -115,13 +115,154 @@
                 padding: 72px 80px;
             }
         }
+
+        /* ─── Sidebar ─── */
+        .sidebar-photo {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            object-position: top center;
+            border: 1px solid var(--border);
+            margin-bottom: 28px;
+            filter: grayscale(20%);
+            transition: filter 0.4s ease;
+        }
+
+        .sidebar-photo:hover {
+            filter: grayscale(0%);
+        }
+
+        .sidebar-name {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 900;
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .sidebar-handle {
+            font-family: 'Geist Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .sidebar-tagline {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 36px;
+        }
+
+        /* Social links */
+        .social-links {
+            list-style: none;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .social-links {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .social-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .social-links i {
+            width: 16px;
+            font-size: 0.9rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Contact info */
+        .sidebar-contact {
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+        }
+
+        .sidebar-contact a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-family: 'Geist Mono', monospace;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-contact a:hover {
+            color: var(--accent);
+        }
+
+        .sidebar-contact i {
+            width: 14px;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 
 <body>
     <div class="site-wrapper">
         <aside class="sidebar">
-            <!-- sidebar placeholder -->
+            <img class="sidebar-photo" src="assets/me.jpeg" alt="Jonathan Martin">
+            <h1 class="sidebar-name">Jonathan Martin</h1>
+            <span class="sidebar-handle">// jono20201</span>
+            <p class="sidebar-tagline">Father, entrepreneur and software engineering leader.</p>
+
+            <ul class="social-links">
+                <li><a href="https://github.com/Jono20201" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+                <li><a href="https://stackoverflow.com/users/1392533/jono20201" target="_blank"><i class="fab fa-stack-overflow"></i> StackOverflow</a></li>
+                <li><a href="https://x.com/jono20201" target="_blank"><i class="fab fa-x-twitter"></i> X</a></li>
+                <li><a href="https://www.linkedin.com/in/jonathanpaulmartin/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+            </ul>
+
+            <div class="sidebar-contact">
+                <a href="mailto:jono20201@gmail.com"><i class="fas fa-envelope"></i> jono20201@gmail.com</a>
+                <a href="tel:07446066435"><i class="fas fa-phone"></i> +44 74460 66435</a>
+            </div>
         </aside>
         <main class="main-content">
             <!-- main content placeholder -->
