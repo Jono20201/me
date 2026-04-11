@@ -71,70 +71,67 @@
         strong {
             font-weight: 600;
         }
+
+        /* ─── Layout ─── */
+        .site-wrapper {
+            display: block;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .sidebar {
+            padding: 40px 28px;
+            background-color: var(--bg);
+        }
+
+        .main-content {
+            padding: 48px 28px;
+        }
+
+        @media (min-width: 768px) {
+            .site-wrapper {
+                display: grid;
+                grid-template-columns: var(--sidebar-width) 1fr;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                overflow-y: auto;
+                padding: 56px 48px;
+                border-right: 1px solid var(--border);
+            }
+
+            .main-content {
+                padding: 56px 64px;
+                overflow-y: auto;
+                height: 100vh;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .sidebar {
+                padding: 72px 64px;
+            }
+
+            .main-content {
+                padding: 72px 80px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="container container--left">
-        <div class="profile">
-            <img src="assets/me.jpeg" alt="A photograph of me.">
-            <div>
-                <h1>Jonathan Martin</h1>
-                <h3>aka. jono20201</h3>
-                <h2>Father, entrepreneur and software engineering leader.</h2>
-            </div>
-        </div>
-
-        <div class="links">
-            <ul>
-                <li><a href="https://github.com/Jono20201" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
-                <li><a href="https://stackoverflow.com/users/1392533/jono20201" target="_blank"><i class="fab fa-stack-overflow"></i> StackOverflow</a></li>
-                <li><a href="https://x.com/jono20201" target="_blank"><i class="fab fa-x-twitter"></i> X (Twitter)</a></li>
-                <li><a href="https://www.linkedin.com/in/jonathanpaulmartin/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
-            </ul>
-        </div>
-
-        <p>
-            I help businesses build scalable, secure software solutions that drive growth and reduce costs.
-        </p>
-        
-        <p>
-            I'm currently working as an Staff Software Engineer at <a href='https://acquired.com/'>Acquired</a>, working primarily on our card processing platform.
-        </p>
-
-        <p>
-            I've been fortunate enough to have had exposure to many programming languages, such as
-            <strong>C#</strong>,
-            <strong>JavaScript / TypeScript</strong>, 
-            <strong>PHP</strong>, 
-            <strong>Java</strong>, 
-            <strong>Swift</strong> and
-            <strong>Golang</strong>.
-
-            For many years I focused on developing applications with <strong>.NET</strong>, <strong>React</strong> &amp; <strong>Laravel</strong>.
-        </p>
-
-        <p>
-            Having initially started my career by founding a successful server hosting company, I am proficient in <strong>Linux server administration</strong>.
-            Over the past 5 years I have taken a keen interest in cloud technologies, specifically within the <strong>Amazon Web Services</strong> eco-system. I am a <em>certified AWS solutions architect</em>.
-
-            I gave a talk to Norfolk Developers in November 2019 about <a href="https://www.meetup.com/Norfolk-Developers-NorDev/events/262153256/">"Repeatable cloud infrastructure with <strong>Terraform</strong>"</a>.
-        </p>
-
-        <p>
-            One of my current projects is the <a href="https://marketplace.atlassian.com/apps/1231676/websequencediagrams-connector"><strong>WebSequenceDiagrams Connector</strong></a> for Confluence Cloud, published through my company <em>Quintessential Code Ltd</em>. This Atlassian Marketplace app allows teams to embed sequence diagrams directly into Confluence pages, supporting all WebSequenceDiagrams.com styles and syntax.
-        </p>
-
-        <p>
-            If you are in need of some help with a project I am usually able to provide some help on a consultancy basis. Please don't hesitate to send me an email, or give me a call.
-        </p>
-
-        <div class="contact-info">
-            <a href="mailto:jono20201@gmail.com"><i class="fas fa-envelope"></i> jono20201@gmail.com</a>
-            <a href="tel:07446066435"><i class="fas fa-phone"></i> +44 74460 66435</a>
-        </div>
+    <div class="site-wrapper">
+        <aside class="sidebar">
+            <!-- sidebar placeholder -->
+        </aside>
+        <main class="main-content">
+            <!-- main content placeholder -->
+        </main>
     </div>
-    <div class="container"></div>
 </body>
 
 </html>
