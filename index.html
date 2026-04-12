@@ -241,6 +241,207 @@
             flex-shrink: 0;
             font-size: 0.8rem;
         }
+
+        /* ─── Main content ─── */
+        .content-section {
+            margin-bottom: 56px;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Value proposition */
+        .value-prop {
+            font-family: 'Fraunces', Georgia, serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+            line-height: 1.35;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 48px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Section labels */
+        .section-label {
+            font-family: 'Geist Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        /* About text */
+        .about-text p {
+            font-size: 0.975rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-bottom: 16px;
+        }
+
+        .about-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .about-text a {
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--accent);
+            transition: color 0.2s ease;
+        }
+
+        .about-text a:hover {
+            color: var(--accent);
+        }
+
+        .about-text em {
+            font-style: normal;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* Help section */
+        .help-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .help-item {
+            padding: 24px 20px;
+            border-top: 1px solid var(--border);
+            border-left: 2px solid transparent;
+            transition: border-left-color 0.2s ease, background-color 0.2s ease;
+            cursor: default;
+        }
+
+        .help-item:last-child {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .help-item:hover {
+            border-left-color: var(--accent);
+            background-color: var(--surface);
+        }
+
+        .help-item-title {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .help-item-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* Tech tags */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .tech-tag {
+            font-family: 'Geist Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 3px;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .tech-tag:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Notable work */
+        .notable-items {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .notable-item-title {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .notable-item-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 10px;
+        }
+
+        .notable-item-link {
+            font-size: 0.8rem;
+            font-family: 'Geist Mono', monospace;
+            color: var(--accent);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+
+        .notable-item-link:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        /* Contact CTA — mobile only */
+        .contact-cta {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .contact-cta {
+                display: none;
+            }
+        }
+
+        .contact-cta p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .contact-cta-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-cta-links a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: 'Geist Mono', monospace;
+            transition: color 0.2s ease;
+        }
+
+        .contact-cta-links a:hover {
+            color: var(--accent);
+        }
     </style>
 </head>
 
@@ -265,7 +466,89 @@
             </div>
         </aside>
         <main class="main-content">
-            <!-- main content placeholder -->
+            <p class="value-prop">
+                I help businesses build scalable, secure software — faster than they thought possible.
+            </p>
+
+            <section class="content-section about-text">
+                <span class="section-label">About</span>
+                <p>
+                    I'm a Staff Software Engineer at <a href="https://acquired.com/" target="_blank" rel="noopener noreferrer">Acquired</a>, working primarily on our card processing platform. I've spent my career at the intersection of engineering leadership and hands-on product development — from founding a server hosting company to leading engineering teams at growth-stage startups.
+                </p>
+                <p>
+                    I've worked across many languages — <strong>C#</strong>, <strong>TypeScript</strong>, <strong>PHP</strong>, <strong>Java</strong>, <strong>Swift</strong>, and <strong>Go</strong> — and spent many years building with <strong>.NET</strong>, <strong>React</strong>, and <strong>Laravel</strong>. I'm a <em>certified AWS Solutions Architect</em> and have a strong foundation in Linux server administration and cloud infrastructure.
+                </p>
+                <p>
+                    I'm fully bought into agentic software engineering — using AI agents as first-class members of the engineering workflow to ship more, faster, without compromising quality.
+                </p>
+            </section>
+
+            <section class="content-section">
+                <span class="section-label">What I can help you with</span>
+                <div class="help-items">
+                    <div class="help-item">
+                        <div class="help-item-title">Scaling engineering teams &amp; technical leadership</div>
+                        <div class="help-item-desc">I've led teams from early-stage to growth, hiring, mentoring, and building the processes that let engineers ship with confidence.</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Building cloud-native payment &amp; fintech systems</div>
+                        <div class="help-item-desc">Currently building card processing infrastructure at Acquired. I know what it takes to make payment systems secure, reliable, and auditable at scale.</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">Agentic software engineering &amp; AI-accelerated delivery</div>
+                        <div class="help-item-desc">Fully committed to using AI agents as first-class members of the engineering workflow — producing more, faster, without sacrificing quality.</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-item-title">AWS architecture &amp; infrastructure-as-code</div>
+                        <div class="help-item-desc">Certified AWS Solutions Architect. I design, build, and automate cloud infrastructure with Terraform — repeatable, version-controlled, no snowflakes.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <span class="section-label">Tech &amp; expertise</span>
+                <ul class="tech-tags">
+                    <li class="tech-tag">C#</li>
+                    <li class="tech-tag">.NET</li>
+                    <li class="tech-tag">TypeScript</li>
+                    <li class="tech-tag">React</li>
+                    <li class="tech-tag">PHP</li>
+                    <li class="tech-tag">Laravel</li>
+                    <li class="tech-tag">Go</li>
+                    <li class="tech-tag">Java</li>
+                    <li class="tech-tag">Swift</li>
+                    <li class="tech-tag">AWS</li>
+                    <li class="tech-tag">Terraform</li>
+                    <li class="tech-tag">Linux</li>
+                    <li class="tech-tag">Docker</li>
+                    <li class="tech-tag">Confluence</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <span class="section-label">Notable work</span>
+                <div class="notable-items">
+                    <div class="notable-item">
+                        <div class="notable-item-title">WebSequenceDiagrams Connector for Confluence</div>
+                        <div class="notable-item-desc">An Atlassian Marketplace app published through Quintessential Code Ltd that lets teams embed sequence diagrams directly into Confluence pages, supporting all WebSequenceDiagrams.com styles and syntax.</div>
+                        <a class="notable-item-link" href="https://marketplace.atlassian.com/apps/1231676/websequencediagrams-connector" target="_blank" rel="noopener noreferrer">View on Atlassian Marketplace →</a>
+                    </div>
+                    <div class="notable-item">
+                        <div class="notable-item-title">Talk: Repeatable cloud infrastructure with Terraform</div>
+                        <div class="notable-item-desc">Presented at Norfolk Developers (NorDev) in November 2019 on building repeatable, version-controlled cloud infrastructure with Terraform.</div>
+                        <a class="notable-item-link" href="https://www.meetup.com/Norfolk-Developers-NorDev/events/262153256/" target="_blank" rel="noopener noreferrer">View event →</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section contact-cta">
+                <span class="section-label">Get in touch</span>
+                <p>Available for consulting engagements. Don't hesitate to reach out.</p>
+                <div class="contact-cta-links">
+                    <a href="mailto:jono20201@gmail.com"><i class="fas fa-envelope"></i> jono20201@gmail.com</a>
+                    <a href="tel:07446066435"><i class="fas fa-phone"></i> +44 74460 66435</a>
+                </div>
+            </section>
         </main>
     </div>
 </body>
