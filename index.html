@@ -514,10 +514,95 @@
             background-size: 256px 256px;
             background-repeat: repeat;
         }
+
+        /* ─── Mobile header ─── */
+        .mobile-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 24px;
+            background-color: var(--bg);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .mobile-header-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top center;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+        }
+
+        .mobile-header-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mobile-header-name {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .mobile-header-handle {
+            font-family: 'Geist Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .mobile-header-icons {
+            display: flex;
+            gap: 14px;
+            list-style: none;
+        }
+
+        .mobile-header-icons a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .mobile-header-icons a:hover {
+            color: var(--accent);
+        }
+
+        /* Hide mobile header on desktop */
+        @media (min-width: 768px) {
+            .mobile-header {
+                display: none;
+            }
+        }
+
+        /* Hide sidebar on mobile */
+        @media (max-width: 767px) {
+            .sidebar {
+                display: none;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <header class="mobile-header">
+        <img class="mobile-header-photo" src="assets/me.jpeg" alt="Jonathan Martin">
+        <div class="mobile-header-info">
+            <div class="mobile-header-name">Jonathan Martin</div>
+            <div class="mobile-header-handle">// jono20201</div>
+        </div>
+        <ul class="mobile-header-icons">
+            <li><a href="https://github.com/Jono20201" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://x.com/jono20201" target="_blank" rel="noopener noreferrer"><i class="fab fa-x-twitter"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/jonathanpaulmartin/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="mailto:jono20201@gmail.com"><i class="fas fa-envelope"></i></a></li>
+        </ul>
+    </header>
     <div class="site-wrapper">
         <aside class="sidebar">
             <img class="sidebar-photo" src="assets/me.jpeg" alt="Jonathan Martin">
